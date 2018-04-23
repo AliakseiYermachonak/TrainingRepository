@@ -2,7 +2,7 @@ package com.epam.task1.taxistation.model;
 
 public class Cab implements Comparable<Cab> {
 	
-	//уникальный номер для каждого кэба
+	//unique number for each cab
 	private static int counter = 0;
 	
 	private int speed;
@@ -26,37 +26,6 @@ public class Cab implements Comparable<Cab> {
 		this.identifier = counter;
 	}
 	
-	@Override
-	public int compareTo(Cab o) {
-		if (this.fuelConsumption < o.fuelConsumption)
-			return -1;
-		else if (this.fuelConsumption > o.fuelConsumption)
-			return 1;
-		else
-			return 0;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder s = new StringBuilder("Такси №" + identifier);
-		if (speed>0)
-			s.append(" со скоростью " + speed); 
-		else
-			s.append(" с неизвестной скоростью");
-		
-		if (fuelConsumption>0)
-			s.append(" и потреблением топлива " + fuelConsumption); 
-		else
-			s.append(" и неизвестным расходом топлива,");
-		
-		if (price>0)
-			s.append(", стоимостью " + price); 
-		else
-			s.append(", по неведомо цене.");
-		
-		return s.toString();
-	}
-
 	public int getSpeed() {
 		return speed;
 	}
@@ -79,6 +48,41 @@ public class Cab implements Comparable<Cab> {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	
+	@Override
+	public int compareTo(Cab o) {
+		if (this.fuelConsumption < o.fuelConsumption) {
+			return -1;
+		} else if (this.fuelConsumption > o.fuelConsumption) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder("Taxi в„–" + identifier);
+		if (speed>0) {
+			s.append(", has speed " + speed);
+		} else {
+			s.append(", speed is unknown");
+		}
+		
+		if (fuelConsumption>0) {
+			s.append(" and fuel consumption " + fuelConsumption);
+		} else {
+			s.append(", fuel consumption is unknown,");
+		}
+		
+		if (price>0) {
+			s.append(", costs " + price);
+		} else {
+			s.append(", price is also unknown.");
+		}
+		return s.toString();
 	}
 
 }
