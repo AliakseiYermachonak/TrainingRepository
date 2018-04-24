@@ -36,11 +36,13 @@ public class Runner {
 						taxiService.showCabWithSpeed();
 						break;
 					} catch (TaxiNotFoundException e) {
-						System.out.println("There are no suchlike taxi");
+						System.out.println("There are no a suchlike taxi");
+						e.printStackTrace();
 						continue;
 					}
 				}
 				case 0: {
+					System.out.println("You are leaving the program, \nGoodbye!");
 					return;
 				}
 				default: {
@@ -72,6 +74,7 @@ public class Runner {
 			}
 		} catch(InputMismatchException e) {
 			System.out.println("Input is not a number.");
+			e.printStackTrace();
 		}
 		return input;
 	}

@@ -64,24 +64,11 @@ public class Cab implements Comparable<Cab> {
 	
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder("Taxi №" + identifier);
-		if (speed>0) {
-			s.append(", has speed " + speed);
-		} else {
-			s.append(", speed is unknown");
-		}
+		StringBuilder s = new StringBuilder(this.getClass().getSimpleName() + " №" + identifier);
+		s.append(", has speed " + speed);
+		s.append(" and fuel consumption " + fuelConsumption);
+		s.append(", costs " + price);
 		
-		if (fuelConsumption>0) {
-			s.append(" and fuel consumption " + fuelConsumption);
-		} else {
-			s.append(", fuel consumption is unknown,");
-		}
-		
-		if (price>0) {
-			s.append(", costs " + price);
-		} else {
-			s.append(", price is also unknown.");
-		}
 		return s.toString();
 	}
 

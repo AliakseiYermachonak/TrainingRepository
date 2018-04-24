@@ -25,7 +25,7 @@ public class TaxiService {
 			int price = ((int) (Math.random()*600 + 500)) * (i+1);
 			int speed = ((int) (Math.random()*16 + 15)) * (i+1);
 			int fuel = ((int) (Math.random()*16 + 5));
-			taxiStation.addCab(speed, fuel, price);
+			taxiStation.addCab(new Cab(speed, fuel, price));
 		}
 		showCabList();
 	}
@@ -34,10 +34,10 @@ public class TaxiService {
 	public void showCabList() {
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
-			return;
-		}
-		for (Cab cab: taxiStation.getCabList()) {
-			System.out.println(cab);
+		} else {
+			for (Cab cab: taxiStation.getCabList()) {
+				System.out.println(cab);
+			}
 		}
 	}
 	
@@ -45,10 +45,10 @@ public class TaxiService {
 	public void sortCabs(){
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
-			return;
+		} else {
+			Collections.sort(taxiStation.getCabList());
+			showCabList();
 		}
-		Collections.sort(taxiStation.getCabList());
-		showCabList();
 	}
 	
 	//shows the total taxi station price
@@ -65,12 +65,12 @@ public class TaxiService {
 	}
 	
 	//looks for a cab with speed parameter from the received delta
-	public Cab showCabWithSpeed() {
+	public Cab showCabWithSpeed() throws TaxiNotFoundException {
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
 		}
 
-		int a = -1, b = -1;
+		int a, b;
 		
 		Scanner scanner = new Scanner(System.in);
 		try {
@@ -78,11 +78,7 @@ public class TaxiService {
 			a = Integer.parseInt(scanner.next());
 			System.out.println("Upper bound of taxi speed is ");
 			b = Integer.parseInt(scanner.next());
-			if (a>b) {
-				a+=b;
-				b = a - b;
-				a-=b;
-			}
+			
 			for (Cab cab: taxiStation.getCabList()) {
 				if (cab.getSpeed()>=a && cab.getSpeed()<=b) {
 					System.out.println("You are looking for a \n" + cab);
@@ -91,6 +87,7 @@ public class TaxiService {
 			}
 		} catch (NumberFormatException e) {
 			System.out.println("Please, enter a number");
+			e.printStackTrace();
 		}
 		throw new TaxiNotFoundException();	
 	}

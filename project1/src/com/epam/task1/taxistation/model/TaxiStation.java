@@ -15,8 +15,8 @@ public class TaxiStation {
 		this.cabList = cabList;
 	}
 	
-	public void addCab(int speed, int fuelConsumption, int price) {
-		cabList.add(new Cab(speed, fuelConsumption, price));
+	public void addCab(Cab cab) {
+		cabList.add(cab);
 	}
 	
 	public int getSize() {
