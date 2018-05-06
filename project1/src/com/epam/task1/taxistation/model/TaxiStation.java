@@ -22,4 +22,40 @@ public class TaxiStation {
 	public int getSize() {
 		return cabList.size();
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder(this.getClass().getSimpleName());
+		s.append("TaxiStation [cabList=");
+		s.append(cabList);
+		s.append("]");
+		
+		return s.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cabList == null) ? 0 : cabList.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TaxiStation other = (TaxiStation) obj;
+		if (cabList == null) {
+			if (other.cabList != null)
+				return false;
+		} else if (!cabList.equals(other.cabList))
+			return false;
+		return true;
+	}
+	
 }

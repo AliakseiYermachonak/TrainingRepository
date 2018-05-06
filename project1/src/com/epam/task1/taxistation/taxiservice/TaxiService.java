@@ -6,16 +6,36 @@ import java.util.Scanner;
 import com.epam.task1.taxistation.exception.TaxiNotFoundException;
 import com.epam.task1.taxistation.model.Cab;
 import com.epam.task1.taxistation.model.TaxiStation;
-
+/**
+ * Is used for executing commands
+ * according to the main menu
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
 public class TaxiService {
 	
+	/**
+	 * Attribute is an entity object
+	 * with our list of cabs to work with
+	 * @see TaxiStation
+	 */
 	private TaxiStation taxiStation;
 
+	/**
+	 * Creates a new service class
+	 * for each entity object 
+	 * @param taxiStation
+	 * @see TaxiStation
+	 */
 	public TaxiService(TaxiStation taxiStation) {
 		this.taxiStation = taxiStation;
 	}
 
-	//generates a list of random cabs with random parameters
+	/**
+	 * Generates a list of random cabs
+	 * with random parameters
+	 * @see Cab
+	 */
 	public void generateCabList() {
 		if (!taxiStation.getCabList().isEmpty()) {
 			taxiStation.getCabList().clear();
@@ -30,7 +50,10 @@ public class TaxiService {
 		showCabList();
 	}
 	
-	//shows each cab from the list
+	/**
+	 * Shows each cab from the list
+	 * @see Cab
+	 */
 	public void showCabList() {
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
@@ -41,7 +64,9 @@ public class TaxiService {
 		}
 	}
 	
-	//sorts cabs according to their fuel consumption
+	/**
+	* Sorts cabs according to their fuel consumption
+	*/
 	public void sortCabs(){
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
@@ -51,7 +76,10 @@ public class TaxiService {
 		}
 	}
 	
-	//shows the total taxi station price
+	/**
+	 * Shows the total taxi station price
+	 * @return integer price
+	 */
 	public int showPrice() {
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
@@ -64,7 +92,13 @@ public class TaxiService {
 		return sum;
 	}
 	
-	//looks for a cab with speed parameter from the received delta
+	/**
+	 * Looks for a cab with speed parameter from the received delta.
+	 * Asks to input delta from console
+	 * @return The first cab, suitable for the input data.
+	 * @throws TaxiNotFoundException
+	 * @see Cab
+	 */
 	public Cab showCabWithSpeed() throws TaxiNotFoundException {
 		if (taxiStation.getCabList().isEmpty()) {
 			System.out.println("Note: your taxi station is empty");
