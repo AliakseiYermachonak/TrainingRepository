@@ -88,7 +88,7 @@ public class TaxiService {
 	
 	/**
 	 * Shows the total taxi station price
-	 * @return integer price
+	 * @return int price
 	 */
 	public int showPrice() {
 		logger.debug("Loading taxi station total price.");
