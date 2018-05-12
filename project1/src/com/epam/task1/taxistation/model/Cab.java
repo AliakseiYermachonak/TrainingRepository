@@ -1,4 +1,5 @@
 package com.epam.task1.taxistation.model;
+
 /**
  * This class is used to describe some specific cab
  * and keeps its main attributes
@@ -11,7 +12,6 @@ public class Cab implements Comparable<Cab> {
 	 * Counter for a unique identifier for each cab
 	 */
 	private static int counter = 0;
-	
 	
 	private int speed;
 	private int fuelConsumption;

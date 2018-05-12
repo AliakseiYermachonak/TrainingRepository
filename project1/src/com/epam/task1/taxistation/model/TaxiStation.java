@@ -3,6 +3,12 @@ package com.epam.task1.taxistation.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity class for a list of given Cabs
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
+
 public class TaxiStation {
 
 	private List<Cab> cabList = new ArrayList<Cab>();
@@ -15,10 +21,19 @@ public class TaxiStation {
 		this.cabList = cabList;
 	}
 	
+	/**
+	 * Adds a new Cab into the list of cabs.
+	 * @see Cab
+	 */
 	public void addCab(Cab cab) {
 		cabList.add(cab);
 	}
 	
+	/**
+	 * Use this to get the total amount of Cabs
+	 * @return int number of cabs
+	 * @see Cab
+	 */
 	public int getSize() {
 		return cabList.size();
 	}

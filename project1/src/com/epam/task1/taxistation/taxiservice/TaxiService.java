@@ -3,16 +3,21 @@ package com.epam.task1.taxistation.taxiservice;
 import java.util.Collections;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import com.epam.task1.taxistation.exception.TaxiNotFoundException;
 import com.epam.task1.taxistation.model.Cab;
 import com.epam.task1.taxistation.model.TaxiStation;
 /**
- * Is used for executing commands
+ * Class is used for executing commands
  * according to the main menu
  * @author Alexey Yermachyonok
  * @version 1.0
  */
 public class TaxiService {
+	
+	final static Logger logger = Logger.getLogger(TaxiService.class);
 	
 	/**
 	 * Attribute is an entity object
@@ -29,6 +34,7 @@ public class TaxiService {
 	 */
 	public TaxiService(TaxiStation taxiStation) {
 		this.taxiStation = taxiStation;
+		PropertyConfigurator.configure("properties/log4j.properties");
 	}
 
 	/**
@@ -37,6 +43,7 @@ public class TaxiService {
 	 * @see Cab
 	 */
 	public void generateCabList() {
+		logger.debug("Generating a list of random cabs.");
 		if (!taxiStation.getCabList().isEmpty()) {
 			taxiStation.getCabList().clear();
 		}
@@ -47,6 +54,7 @@ public class TaxiService {
 			int fuel = ((int) (Math.random()*16 + 5));
 			taxiStation.addCab(new Cab(speed, fuel, price));
 		}
+		logger.debug("List of cabs has been generated.");
 		showCabList();
 	}
 	
@@ -55,11 +63,12 @@ public class TaxiService {
 	 * @see Cab
 	 */
 	public void showCabList() {
+		logger.debug("Showing cab list on console.");
 		if (taxiStation.getCabList().isEmpty()) {
-			System.out.println("Note: your taxi station is empty");
+			logger.info("Note: your taxi station is empty");
 		} else {
 			for (Cab cab: taxiStation.getCabList()) {
-				System.out.println(cab);
+				logger.info(cab);
 			}
 		}
 	}
@@ -68,8 +77,9 @@ public class TaxiService {
 	* Sorts cabs according to their fuel consumption
 	*/
 	public void sortCabs(){
+		logger.debug("Sorting cabs.");
 		if (taxiStation.getCabList().isEmpty()) {
-			System.out.println("Note: your taxi station is empty");
+			logger.info("Note: your taxi station is empty");
 		} else {
 			Collections.sort(taxiStation.getCabList());
 			showCabList();
@@ -81,14 +91,15 @@ public class TaxiService {
 	 * @return integer price
 	 */
 	public int showPrice() {
+		logger.debug("Loading taxi station total price.");
 		if (taxiStation.getCabList().isEmpty()) {
-			System.out.println("Note: your taxi station is empty");
+			logger.info("Note: your taxi station is empty");
 		}
 		int sum = 0;
 		for (Cab cab: taxiStation.getCabList()) {
 			sum += cab.getPrice();
 		}
-		System.out.println("Total taxi station price: " + sum);
+		logger.info("Total taxi station price: " + sum);
 		return sum;
 	}
 	
@@ -100,28 +111,31 @@ public class TaxiService {
 	 * @see Cab
 	 */
 	public Cab showCabWithSpeed() throws TaxiNotFoundException {
+		logger.debug("Reading data for the cab search.");
 		if (taxiStation.getCabList().isEmpty()) {
-			System.out.println("Note: your taxi station is empty");
+			logger.info("Note: your taxi station is empty");
 		}
 
 		int a, b;
 		
 		Scanner scanner = new Scanner(System.in);
 		try {
-			System.out.println("Bottom line of taxi speed is ");
+			logger.info("Bottom line of taxi speed is ");
 			a = Integer.parseInt(scanner.next());
-			System.out.println("Upper bound of taxi speed is ");
+			logger.info("Upper bound of taxi speed is ");
 			b = Integer.parseInt(scanner.next());
+			
+			logger.debug("Looking for a cab from the range.");
 			
 			for (Cab cab: taxiStation.getCabList()) {
 				if (cab.getSpeed()>=a && cab.getSpeed()<=b) {
-					System.out.println("You are looking for a \n" + cab);
+					logger.info("You are looking for a \n" + cab);
 					return cab;
 				}
 			}
 		} catch (NumberFormatException e) {
-			System.out.println("Please, enter a number");
-			e.printStackTrace();
+			logger.info("Please, enter a number");
+			logger.error("Number input problem. \nStack:", e);
 		}
 		throw new TaxiNotFoundException();	
 	}

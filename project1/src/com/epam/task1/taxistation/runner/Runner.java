@@ -3,21 +3,41 @@ package com.epam.task1.taxistation.runner;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import com.epam.task1.taxistation.exception.TaxiNotFoundException;
 import com.epam.task1.taxistation.model.TaxiStation;
 import com.epam.task1.taxistation.taxiservice.TaxiService;
 
+/**
+ * Main class to start the Taxi Station program,
+ * contains methods for working with a console 
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
+
 public class Runner {
 
+	static final Logger logger = Logger.getLogger(Runner.class);
+	
 	public static void main(String[] args) {
+		PropertyConfigurator.configure("properties/log4j.properties");
+		logger.debug("Logger had been started");
 		runTaxiStationMenu(new TaxiStation());
 	}
 	
-	//shows menu on console
+	/**
+	 * Method gets an option from the user and executes it.
+	 * @param TaxiStation
+	 * @see TaxiStation
+	 */
 	public static void runTaxiStationMenu(TaxiStation taxiStation) {
 		TaxiService taxiService = new TaxiService(taxiStation);
+		logger.debug("TaxiService created.");
 		while (true) {
 			showMenuLines();
+			logger.debug("Menu loaded");
 			switch (doCommand()) {
 				case 1: { 
 					taxiService.generateCabList();
@@ -36,35 +56,42 @@ public class Runner {
 						taxiService.showCabWithSpeed();
 						break;
 					} catch (TaxiNotFoundException e) {
-						System.out.println("There are no a suchlike taxi");
-						e.printStackTrace();
+						logger.info("There are no a suchlike taxi");
+						logger.error("Taxi was not found. \nStack:", e);
 						continue;
 					}
 				}
 				case 0: {
-					System.out.println("You are leaving the program, \nGoodbye!");
+					logger.info("You are leaving the program, \nGoodbye!");
+					logger.debug("Leaving the program.");
 					return;
 				}
 				default: {
-					System.out.println("Please, try again.");
+					logger.info("Please, try again.");
 					break;
 				}
 			}
 		}
 	}
 	
-	//printing the menu on console
+	/**
+	 * Prints the menu on console
+	 */
 	public static void showMenuLines() {
-		System.out.println("Welcom to our taxi station, \nselect one of the next options:" );
-		System.out.println("1 -- Generate a set of random taxis");
-		System.out.println("2 -- Count the total price");
-		System.out.println("3 -- Sort the taxis according to the fuel consumption");
-		System.out.println("4 -- Get the cab with speed from the range");
-		System.out.println("0 -- Exit");
+		logger.info("Welcom to our taxi station, \nselect one of the next options:" );
+		logger.info("1 -- Generate a set of random taxis");
+		logger.info("2 -- Count the total price");
+		logger.info("3 -- Sort the taxis according to the fuel consumption");
+		logger.info("4 -- Get the cab with speed from the range");
+		logger.info("0 -- Exit");
 	}
 	
-	//Reads the number of selected option
+	/**
+	 * Reads the number of selected option
+	 * @return int parameter of chosen option
+	 */
 	public static int doCommand() {
+		logger.debug("Reading the command.");
 		int input = -1;
 		try {
 			Scanner scanner = new Scanner(System.in);
@@ -73,8 +100,8 @@ public class Runner {
 				scanner.close();
 			}
 		} catch(InputMismatchException e) {
-			System.out.println("Input is not a number.");
-			e.printStackTrace();
+			logger.info("Input is not a number.");
+			logger.error("Command input mistake. \nStack:", e);
 		}
 		return input;
 	}
