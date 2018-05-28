@@ -58,6 +58,7 @@ public class TextComponent implements Component{
 	public void parseText(String text, TextType textType) {
 		String[] s1 = text.split(" ");
 		for (String s2 : s1) {
+			//gag
 			list.add(new TextComponent(s2));
 		}
 	}
