@@ -2,6 +2,8 @@ package com.epam.task.two.text.entity;
 
 import java.util.ArrayList;
 
+import com.epam.task.two.text.executors.Parser;
+
 public class TextComponent implements Component{
 
 	private ArrayList<Component> list;
@@ -13,7 +15,7 @@ public class TextComponent implements Component{
 		leaf = true;
 		textType = TextType.WORD;
 		this.data = data;
-		list.add(this);
+		//list.add(this);
 	}
 	
 	
@@ -56,21 +58,58 @@ public class TextComponent implements Component{
 	
 	@Override
 	public void parseText(String text, TextType textType) {
-		String[] s1 = text.split(" ");
-		for (String s2 : s1) {
-			//gag
-			list.add(new TextComponent(s2));
-		}
+		list = Parser.parse(text, textType);
 	}
 
 	@Override
 	public String getData() {
-		return null;
+		return data;
 	}
 
 	@Override
 	public void setData(String data) {
 		this.data = data;
 	}
-
+	
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder(); 
+		for (Component component: list) {
+			
+			switch (component.getTextType()) {
+				case TEXT : {
+					stringBuilder.append(component.toString());
+					break;
+				}
+				case PARAGRAPH : {
+					stringBuilder.append(component.toString());
+					stringBuilder.append("\n");
+					break;
+				}
+				case SENTENCE : {
+					stringBuilder.append(component.toString());
+					stringBuilder.append(". ");
+					break;
+				}
+				case PREWORD :{
+					stringBuilder.append(component.toString());
+					break;
+				}
+				case WORD :{
+					stringBuilder.append(component.getData());
+					break;
+				}
+				default: {
+					
+				}
+			}
+			
+			/*if (component.isLeaf()) {
+				stringBuilder.append(component.getData());
+			} else {
+				stringBuilder.append(component.toString());
+			}*/
+		}
+		return stringBuilder.toString();
+	}
 }

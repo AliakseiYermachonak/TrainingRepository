@@ -2,17 +2,18 @@ package com.epam.task.two.text.entity;
 
 public enum TextType {
 
-	TEXT("zero"),
-	PARAGRAPH("one"),
-	SENTENCE("two"),
-	WORD("three");
+	TEXT("\n"),
+	PARAGRAPH("[.]"),
+	SENTENCE("[\\\\W_]"),
+	PREWORD(" "),
+	WORD("");
 	
 	private String regex;
 	private int next;
 	
 	TextType(String regex){
 		this.setRegex(regex);
-		setNext(this.ordinal() < 3? this.ordinal() + 1 : 3);
+		setNext(this.ordinal() < 4? this.ordinal() + 1 : 4);
 	}
 
 	public String getRegex() {
