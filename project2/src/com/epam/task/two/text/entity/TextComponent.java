@@ -2,10 +2,20 @@ package com.epam.task.two.text.entity;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import com.epam.task.two.text.exceptions.WTFException;
 import com.epam.task.two.text.executors.Parser;
 
 public class TextComponent implements Component{
 
+	private static final Logger logger = Logger.getLogger(TextComponent.class);
+	
+	static {
+		PropertyConfigurator.configure("resources/log4j.properties");
+	}
+	
 	private ArrayList<Component> list;
 	private TextType textType;
 	private boolean leaf;
@@ -15,15 +25,20 @@ public class TextComponent implements Component{
 		leaf = true;
 		textType = TextType.WORD;
 		this.data = data;
-		//list.add(this);
+		logger.debug("creating new leaf component");
+		list = new ArrayList();
 	}
 	
 	
-	public TextComponent(String text, TextType textType) {
+	public TextComponent(String text, TextType textType, boolean leaf) {
 		this.textType = textType;
-		leaf = false;
-		data = "";
-		parseText(text, textType);
+		this.leaf = leaf;
+		logger.debug("creating new container with " + textType);
+		if (!leaf) {
+			parseText(text, textType);
+		} else {
+			this.data = text;
+		}
 	}
 
 	@Override
@@ -58,7 +73,11 @@ public class TextComponent implements Component{
 	
 	@Override
 	public void parseText(String text, TextType textType) {
-		list = Parser.parse(text, textType);
+		try {
+			list = Parser.parse(text, textType);
+		} catch (WTFException e) {
+			logger.error(e);
+		}
 	}
 
 	@Override
@@ -73,7 +92,10 @@ public class TextComponent implements Component{
 	
 	@Override
 	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder(); 
+		StringBuilder stringBuilder = new StringBuilder();
+		if (leaf) {
+			return stringBuilder.append(data).toString();
+		}
 		for (Component component: list) {
 			
 			switch (component.getTextType()) {
@@ -83,32 +105,23 @@ public class TextComponent implements Component{
 				}
 				case PARAGRAPH : {
 					stringBuilder.append(component.toString());
-					stringBuilder.append("\n");
+					stringBuilder.append("\n");	
 					break;
 				}
 				case SENTENCE : {
 					stringBuilder.append(component.toString());
-					stringBuilder.append(". ");
 					break;
 				}
-				case PREWORD :{
-					stringBuilder.append(component.toString());
-					break;
-				}
-				case WORD :{
+				case WORD : {
 					stringBuilder.append(component.getData());
+					stringBuilder.append(" ");
 					break;
 				}
 				default: {
-					
+					stringBuilder.append(component.toString());
+					break;
 				}
 			}
-			
-			/*if (component.isLeaf()) {
-				stringBuilder.append(component.getData());
-			} else {
-				stringBuilder.append(component.toString());
-			}*/
 		}
 		return stringBuilder.toString();
 	}

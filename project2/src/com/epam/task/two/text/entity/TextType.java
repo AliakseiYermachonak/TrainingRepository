@@ -3,17 +3,17 @@ package com.epam.task.two.text.entity;
 public enum TextType {
 
 	TEXT("\n"),
-	PARAGRAPH("[.]"),
-	SENTENCE("[\\\\W_]"),
-	PREWORD(" "),
-	WORD("");
+	PARAGRAPH("\\d.*?[\\s]+|\\b\\p{Upper}.*?[!.?:]+|\\b\\p{Upper}.*?$"),
+	SENTENCE("\\d.*?[.]+|\\p{Graph}.*?[!.?:\\s]+|\\p{Graph}.*?$"),
+	WORD("\\w+|[!.?:]+");
 	
 	private String regex;
 	private int next;
+	public final static String PREWORD = "[a-zA-Z]*?[!.?:]+";
 	
 	TextType(String regex){
 		this.setRegex(regex);
-		setNext(this.ordinal() < 4? this.ordinal() + 1 : 4);
+		setNext(this.ordinal() < 3? this.ordinal() + 1 : 3);
 	}
 
 	public String getRegex() {
@@ -31,5 +31,5 @@ public enum TextType {
 	public void setNext(int next) {
 		this.next = next;
 	}
-	
+		
 }

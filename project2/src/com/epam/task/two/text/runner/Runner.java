@@ -18,26 +18,29 @@ public class Runner {
 	public static void main(String[] args) {
 
 		PropertyConfigurator.configure("resources/log4j.properties");
+		logger.debug("");
+		logger.debug("=================================================");
 		logger.debug("Logger had been started");
 		
 		
 		//System.out.println(readFromFile());
-		
-		Component component = new TextComponent(readFromFile(), TextType.TEXT);
+		Component component = new TextComponent(readFromFile(), TextType.TEXT, false);
 		System.out.println(component);
 
 	}
 	
 	public static String readFromFile(){
 		StringBuilder stringBuilder = new StringBuilder();
+		logger.debug("start reading file");
 		try(Scanner scanner = new Scanner(new FileReader("./resources/Text2Read.txt"))){
 			while(scanner.hasNext()) {
 				stringBuilder.append(scanner.nextLine());
 				stringBuilder.append("\n");
 			}
 		} catch (IOException e) {
-			System.out.println("wrong");
+			logger.error(e);
 		}
+		logger.debug("file successfully read");
 		return stringBuilder.toString();
 	}
 }
