@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.epam.task.two.text.exceptions.WTFException;
-import com.epam.task.two.text.executors.Parser;
-
-public class TextComponent implements Component{
+public class TextComponent implements Component {
 
 	private static final Logger logger = Logger.getLogger(TextComponent.class);
 	
@@ -21,26 +18,37 @@ public class TextComponent implements Component{
 	private boolean leaf;
 	private String data;
 	
+	public TextComponent() {
+		leaf = false;
+		textType = TextType.TEXT;
+		logger.debug("creating new text component");
+		list = new ArrayList<Component>();
+	}
+	
 	public TextComponent(String data) {
 		leaf = true;
 		textType = TextType.WORD;
 		this.data = data;
 		logger.debug("creating new leaf component");
-		list = new ArrayList();
+		list = new ArrayList<Component>();
 	}
 	
-	
 	public TextComponent(String text, TextType textType, boolean leaf) {
+		this.list = new ArrayList<Component>();
 		this.textType = textType;
 		this.leaf = leaf;
 		logger.debug("creating new container with " + textType);
-		if (!leaf) {
-			parseText(text, textType);
-		} else {
-			this.data = text;
-		}
+		this.data = text;
 	}
 
+	public TextComponent(ArrayList<Component> list, TextType textType, boolean leaf) {
+		this.list = new ArrayList<Component>();
+		this.textType = textType;
+		this.list.addAll(list);
+		this.leaf = leaf;
+		logger.debug("creating new container with " + textType);
+	}
+	
 	@Override
 	public ArrayList<Component> getList() {
 		return list;
@@ -49,6 +57,11 @@ public class TextComponent implements Component{
 	@Override
 	public void add(Component component) {
 		list.add(component);
+	}
+	
+	@Override
+	public void addAll(ArrayList<Component> components) {
+		list.addAll(components);
 	}
 
 	@Override
@@ -70,19 +83,14 @@ public class TextComponent implements Component{
 	public int getLength() {
 		return list.size();
 	}
-	
-	@Override
-	public void parseText(String text, TextType textType) {
-		try {
-			list = Parser.parse(text, textType);
-		} catch (WTFException e) {
-			logger.error(e);
-		}
-	}
 
 	@Override
 	public String getData() {
-		return data;
+		if (leaf) {
+			return data;
+		} else {
+			return this.toString();
+		}
 	}
 
 	@Override
@@ -94,10 +102,10 @@ public class TextComponent implements Component{
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (leaf) {
-			return stringBuilder.append(data).toString();
+			String s = stringBuilder.append(data).toString();
+			return s;
 		}
 		for (Component component: list) {
-			
 			switch (component.getTextType()) {
 				case TEXT : {
 					stringBuilder.append(component.toString());
@@ -109,11 +117,19 @@ public class TextComponent implements Component{
 					break;
 				}
 				case SENTENCE : {
-					stringBuilder.append(component.toString());
+					String sentence = component.toString();
+					stringBuilder.append(sentence);
+					if (!sentence.endsWith(" ")) {
+						stringBuilder.append(" ");
+					}
 					break;
 				}
 				case WORD : {
 					stringBuilder.append(component.getData());
+					/*if (component.getData().matches("[,.!?]")) {
+						stringBuilder.deleteCharAt(stringBuilder.length()-2);
+						System.out.println(stringBuilder);
+					}*/
 					stringBuilder.append(" ");
 					break;
 				}
@@ -125,4 +141,10 @@ public class TextComponent implements Component{
 		}
 		return stringBuilder.toString();
 	}
+
+	@Override
+	public int compareTo(Component o) {
+		return this.getLength()-o.getLength();
+	}
+
 }

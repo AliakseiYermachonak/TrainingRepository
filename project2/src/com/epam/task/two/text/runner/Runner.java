@@ -1,15 +1,16 @@
 package com.epam.task.two.text.runner;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.TextComponent;
 import com.epam.task.two.text.entity.TextType;
+import com.epam.task.two.text.exceptions.WTFException;
+import com.epam.task.two.text.executors.TaskExecutor;
+import com.epam.task.two.text.executors.TextComponentParser;
+import com.epam.task.two.text.executors.TextInputOutput;
+import com.epam.task.two.text.executors.TextParser;
 
 public class Runner {
 
@@ -22,25 +23,28 @@ public class Runner {
 		logger.debug("=================================================");
 		logger.debug("Logger had been started");
 		
+		Component mainComponent = new TextComponent();
 		
-		//System.out.println(readFromFile());
-		Component component = new TextComponent(readFromFile(), TextType.TEXT, false);
-		System.out.println(component);
-
-	}
+		TextParser textParser = new TextParser();
+		TextComponentParser paragraphParser = new TextComponentParser();
+		TextComponentParser sentenceParser = new TextComponentParser();
+		TextComponentParser wordParser = new TextComponentParser();
+		
+		
+		textParser.setNextParser(paragraphParser);
+		paragraphParser.setNextParser(sentenceParser);
+		sentenceParser.setNextParser(wordParser);
 	
-	public static String readFromFile(){
-		StringBuilder stringBuilder = new StringBuilder();
-		logger.debug("start reading file");
-		try(Scanner scanner = new Scanner(new FileReader("./resources/Text2Read.txt"))){
-			while(scanner.hasNext()) {
-				stringBuilder.append(scanner.nextLine());
-				stringBuilder.append("\n");
-			}
-		} catch (IOException e) {
-			logger.error(e);
+		mainComponent.addAll(textParser.parse(TextInputOutput.readFromFile(), TextType.TEXT));
+
+		//mainComponent.addAll(ParserSt.parseText(TextInputOutput.readFromFile(), TextType.TEXT));
+		TextInputOutput.writeToFileText(mainComponent);
+		TaskExecutor.uniqueWordSearch(mainComponent);
+		try {
+			TaskExecutor.componentSort(TaskExecutor.getTextTypeComponents(mainComponent, TextType.SENTENCE));
+		} catch (WTFException e) {
+			e.printStackTrace();
 		}
-		logger.debug("file successfully read");
-		return stringBuilder.toString();
-	}
+		
+	}	
 }

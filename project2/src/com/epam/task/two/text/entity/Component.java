@@ -3,8 +3,6 @@ package com.epam.task.two.text.entity;
 import java.util.ArrayList;
 
 public interface Component extends Comparable<Component>{
-
-	/*void parseText(String text, TextType textType);*/
 	
 	ArrayList<Component> getList();
 	

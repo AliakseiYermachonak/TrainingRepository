@@ -3,13 +3,13 @@ package com.epam.task.two.text.entity;
 public enum TextType {
 
 	TEXT("\n"),
-	PARAGRAPH("\\d.*?[\\s]+|\\b\\p{Upper}.*?[!.?:]+|\\b\\p{Upper}.*?$"),
-	SENTENCE("\\d.*?[.]+|\\p{Graph}.*?[!.?:\\s]+|\\p{Graph}.*?$"),
+	PARAGRAPH("\\d.*?[\\s]+|\\b\\p{Upper}.*?[!.?]+|\\b\\p{Upper}.*?$"),
+	SENTENCE("\\d.*?[.][$]|\\p{Graph}.*?[!.?:\\s]+|\\p{Graph}.*?$"),
 	WORD("\\w+|[!.?:]+");
 	
 	private String regex;
 	private int next;
-	public final static String PREWORD = "[a-zA-Z]*?[!.?:]+";
+	public final static String PREWORD = "[a-zA-Z]*?[,!.?:]+";
 	
 	TextType(String regex){
 		this.setRegex(regex);
