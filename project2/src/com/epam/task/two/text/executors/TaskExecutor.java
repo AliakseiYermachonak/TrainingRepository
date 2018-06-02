@@ -10,7 +10,14 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.TextType;
-import com.epam.task.two.text.exceptions.WTFException;
+import com.epam.task.two.text.exceptions.ComponentsSearchException;
+
+/**
+ * Class container of the static methods
+ * for solving the tasks
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
 
 public class TaskExecutor {
 	
@@ -19,10 +26,19 @@ public class TaskExecutor {
 		PropertyConfigurator.configure("resources/log4j.properties");
 	}
 	
-	public static ArrayList<Component> getTextTypeComponents(Component component, TextType textType) throws WTFException {
+	/**
+	 * Creating a list of the components with given text type
+	 * from the source text
+	 * @param Component to get the list of the components
+	 * @param TextType of the components to find
+	 * @return The ArrayList of the components from the given Component list
+	 * @see Component
+	 */
+	public static ArrayList<Component> getTextTypeComponents(Component component, TextType textType)
+			throws ComponentsSearchException {
 		ArrayList<Component> list = new ArrayList<>();
 		if (component.getTextType().compareTo(textType) > 0) {
-			throw new WTFException();
+			throw new ComponentsSearchException();
 		} else if (component.getTextType() == textType) {
 			
 			list.add(component);
@@ -34,6 +50,12 @@ public class TaskExecutor {
 		return list;
 	}
 	
+	/**
+	 * Sorts the list of components by their components capacity
+	 * end writes it to the file.
+	 * @param Array list of the components to sort,
+	 * @see Component
+	 */
 	public static void componentSort(ArrayList<Component> list) {
 			Collections.sort(list);
 			for(Component c: list) {
@@ -41,6 +63,11 @@ public class TaskExecutor {
 			}
 	}
 	
+	/**
+	 * Searches for the unique word from the first sentence
+	 * end writes it to the file.
+	 * @param Array list of the components to sort,
+	 */
 	public static void uniqueWordSearch(Component component) {
 		try {
 			ArrayList<Component> list = getTextTypeComponents(component, TextType.SENTENCE);
@@ -60,7 +87,7 @@ public class TaskExecutor {
 					TextInputOutput.writeToFileTask(c);
 				}
 			}
-		} catch (WTFException e) {
+		} catch (ComponentsSearchException e) {
 			logger.error(e);
 		} catch (Exception e) {
 			logger.error(e);

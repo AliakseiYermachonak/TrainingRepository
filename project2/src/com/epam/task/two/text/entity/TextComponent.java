@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+/**
+ * Component class for realization
+ * of Composition pattern.
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
+
 public class TextComponent implements Component {
 
 	private static final Logger logger = Logger.getLogger(TextComponent.class);
@@ -49,41 +56,73 @@ public class TextComponent implements Component {
 		logger.debug("creating new container with " + textType);
 	}
 	
+	/**
+	 * Gets list of containing components.
+	 * @return ArrayList of the Components
+	 */
 	@Override
 	public ArrayList<Component> getList() {
 		return list;
 	}
 
+	/**
+	 * Adds component to the list of components.
+	 * @param Component to add
+	 */
 	@Override
 	public void add(Component component) {
 		list.add(component);
 	}
 	
+	/**
+	 * Adds list of components to the list of components.
+	 * @param ArrayList of the Components
+	 */
 	@Override
 	public void addAll(ArrayList<Component> components) {
 		list.addAll(components);
 	}
 
+	/**
+	 * Checks if the component is a leaf of a tree.
+	 * @return boolean
+	 */
 	@Override
 	public boolean isLeaf() {
 		return leaf;
 	}
 	
+	/**
+	 * Marks the component as a leaf or not.
+	 * @param boolean
+	 */
 	@Override
 	public void setLeaf(boolean b) {
 		leaf = b;
 	}
 
+	/**
+	 * Shows the text type of a given components.
+	 * @return TextType
+	 */
 	@Override
 	public TextType getTextType() {
 		return textType;
 	}
 
+	/**
+	 * Gets the number of element in the list of components.
+	 * @return int length.
+	 */
 	@Override
 	public int getLength() {
 		return list.size();
 	}
 
+	/**
+	 * Gets the text of the list of the components.
+	 * @return String text.
+	 */
 	@Override
 	public String getData() {
 		if (leaf) {
@@ -93,11 +132,19 @@ public class TextComponent implements Component {
 		}
 	}
 
+	/**
+	 * Writes the text to the component.
+	 * @param String text.
+	 */
 	@Override
 	public void setData(String data) {
 		this.data = data;
 	}
 	
+	/**
+	 * Gets the text of the list of the components.
+	 * @return String text.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();

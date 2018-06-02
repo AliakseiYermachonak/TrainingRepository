@@ -11,6 +11,13 @@ import org.apache.log4j.PropertyConfigurator;
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.TextType;
 
+/**
+ * Class container of the static methods
+ * for reading and writing text from/to file. 
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
+
 public class TextInputOutput {
 	
 	private static final Logger logger = Logger.getLogger(TextInputOutput.class);
@@ -18,6 +25,10 @@ public class TextInputOutput {
 		PropertyConfigurator.configure("resources/log4j.properties");
 	}
 	
+	/**
+	 * Reads text from the predefined file.
+	 * @return String text.
+	 */
 	public static String readFromFile(){
 		StringBuilder stringBuilder = new StringBuilder();
 		logger.debug("start reading file");
@@ -33,6 +44,11 @@ public class TextInputOutput {
 		return stringBuilder.toString();
 	}
 	
+	/**
+	 * Writes text to the predefined file.
+	 * @param Component to get the text from.
+	 * @see Component
+	 */
 	public static void writeToFileText(Component component){
 		String fileName = "./resources/File2Write.txt";	
 		try(FileWriter fileWriter = new FileWriter(fileName, false)){
@@ -40,10 +56,15 @@ public class TextInputOutput {
             fileWriter.flush();
         }
         catch(IOException e){
-            System.out.println(e.getMessage());
+            logger.error(e);
         } 
 	}
 	
+	/**
+	 * Writes text of the tasks into the predefined files.
+	 * @param Component to get the text from.
+	 * @see Component
+	 */
 	public static void writeToFileTask(Component component){
 		String fileName;
 		if (component.getTextType() == TextType.SENTENCE) {

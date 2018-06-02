@@ -1,33 +1,36 @@
 package com.epam.task.two.text.entity;
 
+/**
+ * The enumeration of the type of text.
+ * @author Alexey Yermachyonok
+ * @version 1.0
+ */
+
 public enum TextType {
 
-	TEXT("\n"),
-	PARAGRAPH("\\d.*?[\\s]+|\\b\\p{Upper}.*?[!.?]+|\\b\\p{Upper}.*?$"),
-	SENTENCE("\\d.*?[.][$]|\\p{Graph}.*?[!.?:\\s]+|\\p{Graph}.*?$"),
-	WORD("\\w+|[!.?:]+");
+	TEXT,
+	PARAGRAPH,
+	SENTENCE,
+	WORD;
 	
-	private String regex;
 	private int next;
-	public final static String PREWORD = "[a-zA-Z]*?[,!.?:]+";
 	
-	TextType(String regex){
-		this.setRegex(regex);
+	TextType(){
 		setNext(this.ordinal() < 3? this.ordinal() + 1 : 3);
 	}
 
-	public String getRegex() {
-		return regex;
-	}
-
-	public void setRegex(String regex) {
-		this.regex = regex;
-	}
-
+	/**
+	 * Gets the next type of the text for the component.
+	 * @return int - ordinal of the enumeration
+	 */
 	public int getNext() {
 		return next;
 	}
 
+	/**
+	 * Sets the next type of the text for the component.
+	 * @param int - ordinal of the enumeration
+	 */
 	public void setNext(int next) {
 		this.next = next;
 	}
