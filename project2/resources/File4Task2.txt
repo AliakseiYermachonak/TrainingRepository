@@ -1,6 +1,0 @@
-Java
-Tutorials
-been
-written
-JDK
-8.
