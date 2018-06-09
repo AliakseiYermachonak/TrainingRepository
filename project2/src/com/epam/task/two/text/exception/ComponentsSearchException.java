@@ -1,4 +1,4 @@
-package com.epam.task.two.text.exceptions;
+package com.epam.task.two.text.exception;
 
 public class ComponentsSearchException extends Exception{
 

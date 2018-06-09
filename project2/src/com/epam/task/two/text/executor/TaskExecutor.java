@@ -1,4 +1,4 @@
-package com.epam.task.two.text.executors;
+package com.epam.task.two.text.executor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.TextType;
-import com.epam.task.two.text.exceptions.ComponentsSearchException;
+import com.epam.task.two.text.exception.ComponentsSearchException;
 
 /**
  * Class container of the static methods
@@ -21,8 +20,8 @@ import com.epam.task.two.text.exceptions.ComponentsSearchException;
 
 public class TaskExecutor {
 	
-	private static final Logger logger = Logger.getLogger(TaskExecutor.class);
-	static {
+	private static final Logger LOGGER = Logger.getLogger(TaskExecutor.class);
+	/*static {
 		PropertyConfigurator.configure("resources/log4j.properties");
 	}
 	
@@ -40,7 +39,6 @@ public class TaskExecutor {
 		if (component.getTextType().compareTo(textType) > 0) {
 			throw new ComponentsSearchException();
 		} else if (component.getTextType() == textType) {
-			
 			list.add(component);
 		} else if (component.getList() != null) {
 			for(Component c: component.getList()) {
@@ -88,9 +86,9 @@ public class TaskExecutor {
 				}
 			}
 		} catch (ComponentsSearchException e) {
-			logger.error(e);
+			LOGGER.error(e);
 		} catch (Exception e) {
-			logger.error(e);
+			LOGGER.error(e);
 		}
 	}
 }

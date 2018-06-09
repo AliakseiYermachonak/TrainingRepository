@@ -1,4 +1,4 @@
-package com.epam.task.two.text.executors;
+package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
 
@@ -18,7 +18,7 @@ public interface Parser {
 	 * @param Parser
 	 * @return Parser
 	 */
-	Parser setNextParser(Parser parser);
+	void setNextParser(Parser parser);
 	
 	/**
 	 * Use this for parsing the text into the elements

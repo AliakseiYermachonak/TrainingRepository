@@ -1,4 +1,4 @@
-package com.epam.task.two.text.executors;
+package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
+import com.epam.task.two.text.entity.LeafComponent;
 import com.epam.task.two.text.entity.TextComponent;
 import com.epam.task.two.text.entity.TextType;
 
@@ -21,10 +22,10 @@ import com.epam.task.two.text.entity.TextType;
 public class TextParser implements Parser{
 
 	private Parser nextParser;
-	private static final Logger logger = Logger.getLogger(TextParser.class);
-	ResourceBundle bundle = ResourceBundle.getBundle("parser", Locale.getDefault());
+	private static final Logger LOGGER = Logger.getLogger(TextParser.class);
+	ResourceBundle bundle = ResourceBundle.getBundle("com.epam.task.two.text.property.parser", Locale.getDefault());
 	public TextParser() {
-		PropertyConfigurator.configure("resources/log4j.properties");
+		PropertyConfigurator.configure("resource/log4j.properties");
 	}
 
 	/**
@@ -33,9 +34,8 @@ public class TextParser implements Parser{
 	 * @return Parser
 	 */
 	@Override
-	public Parser setNextParser(Parser parser) {
+	public void setNextParser(Parser parser) {
 		nextParser = parser;
-		return nextParser;
 	}
 	
 	/**
@@ -59,9 +59,9 @@ public class TextParser implements Parser{
 				if (isStartOfListing(part)||listeningListing) {
 					if (isEndOfListing(part)) {
 						listing.append(part);
-						logger.debug("listing caught");
-						list.add(new TextComponent(listing.toString(), TextType.values()[textType.getNext()], true));
-						logger.debug("listing added");
+						LOGGER.debug("listing caught");
+						list.add(new LeafComponent(listing.toString(), TextType.values()[textType.getNext()]));
+						LOGGER.debug("listing added");
 						listing = new StringBuilder();
 						listeningListing = false;
 					} else {
@@ -71,7 +71,7 @@ public class TextParser implements Parser{
 					}
 				} else {
 					list.add(new TextComponent(nextParser.parse(part, TextType.values()[textType.getNext()]),
-							TextType.values()[textType.getNext()], false));
+							TextType.values()[textType.getNext()]));
 				}
 			
 		}
@@ -83,7 +83,7 @@ public class TextParser implements Parser{
 	 * @param String line
 	 * @return boolean
 	 */
-	public boolean isStartOfListing(String part) {
+	private boolean isStartOfListing(String part) {
 		return part.matches(bundle.getString("StartOfListing"));
 	}
 	
@@ -92,7 +92,7 @@ public class TextParser implements Parser{
 	 * @param String line
 	 * @return boolean
 	 */
-	public boolean isEndOfListing(String part) {
+	private boolean isEndOfListing(String part) {
 		return part.matches(bundle.getString("EndOfListing"));
 	}
 	

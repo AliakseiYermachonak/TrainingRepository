@@ -1,9 +1,7 @@
 package com.epam.task.two.text.entity;
 
 import java.util.ArrayList;
-
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Component class for realization
@@ -14,46 +12,22 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class TextComponent implements Component {
 
-	private static final Logger logger = Logger.getLogger(TextComponent.class);
-	
-	static {
-		PropertyConfigurator.configure("resources/log4j.properties");
-	}
+	private static final Logger LOGGER = Logger.getLogger(TextComponent.class);
 	
 	private ArrayList<Component> list;
 	private TextType textType;
-	private boolean leaf;
-	private String data;
 	
 	public TextComponent() {
-		leaf = false;
 		textType = TextType.TEXT;
-		logger.debug("creating new text component");
+		LOGGER.debug("creating new text component");
 		list = new ArrayList<Component>();
-	}
-	
-	public TextComponent(String data) {
-		leaf = true;
-		textType = TextType.WORD;
-		this.data = data;
-		logger.debug("creating new leaf component");
-		list = new ArrayList<Component>();
-	}
-	
-	public TextComponent(String text, TextType textType, boolean leaf) {
-		this.list = new ArrayList<Component>();
-		this.textType = textType;
-		this.leaf = leaf;
-		logger.debug("creating new container with " + textType);
-		this.data = text;
 	}
 
-	public TextComponent(ArrayList<Component> list, TextType textType, boolean leaf) {
+	public TextComponent(ArrayList<Component> list, TextType textType/*, boolean leaf*/) {
 		this.list = new ArrayList<Component>();
 		this.textType = textType;
 		this.list.addAll(list);
-		this.leaf = leaf;
-		logger.debug("creating new container with " + textType);
+		LOGGER.debug("creating new container with " + textType);
 	}
 	
 	/**
@@ -84,24 +58,6 @@ public class TextComponent implements Component {
 	}
 
 	/**
-	 * Checks if the component is a leaf of a tree.
-	 * @return boolean
-	 */
-	@Override
-	public boolean isLeaf() {
-		return leaf;
-	}
-	
-	/**
-	 * Marks the component as a leaf or not.
-	 * @param boolean
-	 */
-	@Override
-	public void setLeaf(boolean b) {
-		leaf = b;
-	}
-
-	/**
 	 * Shows the text type of a given components.
 	 * @return TextType
 	 */
@@ -125,46 +81,20 @@ public class TextComponent implements Component {
 	 */
 	@Override
 	public String getData() {
-		if (leaf) {
-			return data;
-		} else {
-			return this.toString();
-		}
-	}
-
-	/**
-	 * Writes the text to the component.
-	 * @param String text.
-	 */
-	@Override
-	public void setData(String data) {
-		this.data = data;
-	}
-	
-	/**
-	 * Gets the text of the list of the components.
-	 * @return String text.
-	 */
-	@Override
-	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		if (leaf) {
-			String s = stringBuilder.append(data).toString();
-			return s;
-		}
 		for (Component component: list) {
 			switch (component.getTextType()) {
 				case TEXT : {
-					stringBuilder.append(component.toString());
+					stringBuilder.append(component.getData());
 					break;
 				}
 				case PARAGRAPH : {
-					stringBuilder.append(component.toString());
+					stringBuilder.append(component.getData());
 					stringBuilder.append("\n");	
 					break;
 				}
 				case SENTENCE : {
-					String sentence = component.toString();
+					String sentence = component.getData();
 					stringBuilder.append(sentence);
 					if (!sentence.endsWith(" ")) {
 						stringBuilder.append(" ");
@@ -173,10 +103,6 @@ public class TextComponent implements Component {
 				}
 				case WORD : {
 					stringBuilder.append(component.getData());
-					/*if (component.getData().matches("[,.!?]")) {
-						stringBuilder.deleteCharAt(stringBuilder.length()-2);
-						System.out.println(stringBuilder);
-					}*/
 					stringBuilder.append(" ");
 					break;
 				}
@@ -186,6 +112,29 @@ public class TextComponent implements Component {
 				}
 			}
 		}
+		return stringBuilder.toString();
+	}
+
+	/**
+	 * Writes the text to the component.
+	 * @param String text.
+	 */
+	@Override
+	public void setData(String data) {
+		LOGGER.debug("You cannot put string data to a not leaf component");
+	}
+	
+	/**
+	 * Gets the text of the list of the components.
+	 * @return String text.
+	 */
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(textType);
+		stringBuilder.append(" component contains ");
+		stringBuilder.append(list.size());
+		stringBuilder.append(" elements.");
 		return stringBuilder.toString();
 	}
 
