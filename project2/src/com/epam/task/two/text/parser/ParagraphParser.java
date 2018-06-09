@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
+import com.epam.task.two.text.entity.LeafComponent;
 import com.epam.task.two.text.entity.TextComponent;
 import com.epam.task.two.text.entity.TextType;
 
@@ -57,10 +58,14 @@ public class ParagraphParser implements Parser {
 			String temp = matcher.group().trim();
 			LOGGER.debug("Trying to add " + TextType.values()[textType.getNext()] + " || " + temp);
 			LOGGER.debug("To " + textType);
-			list.add(new TextComponent(nextParser.parse(temp, TextType.values()[textType.getNext()]), 
-					TextType.values()[textType.getNext()]));
-			LOGGER.debug("New component " + TextType.values()[textType.getNext()] + " \"" + temp
-					+ "\" addead to " + textType);
+			if (temp.matches(bundle.getString("DigitWithDot"))) {
+				list.add(new LeafComponent(temp, TextType.values()[textType.getNext()]));
+			} else {
+				list.add(new TextComponent(nextParser.parse(temp, TextType.values()[textType.getNext()]), 
+						TextType.values()[textType.getNext()]));
+				LOGGER.debug("New component " + TextType.values()[textType.getNext()] + " \"" + temp
+						+ "\" addead to " + textType);
+			}
 		}
 		return list;
 	}

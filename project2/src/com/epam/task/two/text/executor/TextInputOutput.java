@@ -28,7 +28,7 @@ public class TextInputOutput {
 	public static String readFromFile(){
 		StringBuilder stringBuilder = new StringBuilder();
 		LOGGER.debug("start reading file");
-		try(Scanner scanner = new Scanner(new FileReader("./resource/Text2Read.txt"))){
+		try(Scanner scanner = new Scanner(new FileReader("./resource/Text2Read2.txt"))){
 			while(scanner.hasNext()) {
 				stringBuilder.append(scanner.nextLine());
 				stringBuilder.append("\n");

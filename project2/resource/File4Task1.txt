@@ -1,23 +1,44 @@
+1.
+1.1.
+1.2.
+1.2.
 The if-then Statement 
 The if-then-else Statement 
 Grade = C 
+The if-then-else Statement 
 The if-then and if-then-else Statements 
 The output from the program is: 
 Omitting them can make the code more brittle. 
-The Java Tutorials have been written for JDK 8. 
+Omitting them can make the code more brittle. 
+One possible implementation of the applyBrakes method could be as follows: 
+One possible implementation of the applyBrakes method could be as follows: 
 One possible implementation of the applyBrakes method could be as follows: 
 Deciding when to omit the braces is a matter of personal taste. 
+Deciding when to omit the braces is a matter of personal taste. 
+The if-then statement is the most basic of all the control flow statements. 
+The if-then statement is the most basic of all the control flow statements. 
+The if-then statement is the most basic of all the control flow statements. 
 The if-then statement is the most basic of all the control flow statements. 
 The compiler cannot catch this sort of error; you'll just get the wrong results. 
-Examples and practices described in this page don't take advantage of improvements introduced in later releases. 
+The compiler cannot catch this sort of error; you'll just get the wrong results. 
+The if-then-else statement provides a secondary path of execution when an "if" clause evaluates to false. 
 The if-then-else statement provides a secondary path of execution when an "if" clause evaluates to false. 
 In addition, the opening and closing braces are optional, provided that the "then" clause contains only one statement: 
 It tells your program to execute a certain section of code only if a particular test evaluates to true. 
+It tells your program to execute a certain section of code only if a particular test evaluates to true. 
 In this case, the action is to simply print an error message stating that the bicycle has already stopped. 
+In this case, the action is to simply print an error message stating that the bicycle has already stopped. 
+It tells your program to execute a certain section of code only if a particular test evaluates to true. 
+It tells your program to execute a certain section of code only if a particular test evaluates to true. 
 However, once a condition is satisfied, the appropriate statements are executed (grade = 'C';) and the remaining conditions are not evaluated. 
+For example, the Bicycle class could allow the brakes to decrease the bicycle's speed only if the bicycle is already in motion. 
+For example, the Bicycle class could allow the brakes to decrease the bicycle's speed only if the bicycle is already in motion. 
+For example, the Bicycle class could allow the brakes to decrease the bicycle's speed only if the bicycle is already in motion. 
 For example, the Bicycle class could allow the brakes to decrease the bicycle's speed only if the bicycle is already in motion. 
 If this test evaluates to false (meaning that the bicycle is not in motion), control jumps to the end of the if-then statement. 
 If a second statement is later added to the "then" clause, a common mistake would be forgetting to add the newly required braces. 
+If a second statement is later added to the "then" clause, a common mistake would be forgetting to add the newly required braces. 
 You could use an if-then-else statement in the applyBrakes method to take some action if the brakes are applied when the bicycle is not in motion. 
 You may have noticed that the value of testscore can satisfy more than one expression in the compound statement: 76 >= 70 and 76 >= 60. 
+You could use an if-then-else statement in the applyBrakes method to take some action if the brakes are applied when the bicycle is not in motion. 
 The following program, IfElseDemo, assigns a grade based on the value of a test score: an A for a score of 90% or above, a B for a score of 80% or above, and so on. 
