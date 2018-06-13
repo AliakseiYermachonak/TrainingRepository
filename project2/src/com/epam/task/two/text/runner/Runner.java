@@ -5,11 +5,10 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.TextComponent;
-import com.epam.task.two.text.entity.TextType;
-import com.epam.task.two.text.exception.ComponentsSearchException;
+import com.epam.task.two.text.exception.ComponentMismatchException;
 import com.epam.task.two.text.executor.TaskExecutor;
 import com.epam.task.two.text.executor.TextInputOutput;
-import com.epam.task.two.text.parser.LeafLookingParser;
+import com.epam.task.two.text.parser.SentenceParser;
 import com.epam.task.two.text.parser.Parser;
 import com.epam.task.two.text.parser.ParagraphParser;
 import com.epam.task.two.text.parser.TextParser;
@@ -27,7 +26,6 @@ public class Runner {
 	public static void main(String[] args) {
 		
 		PropertyConfigurator.configure("resource/log4j.properties");
-		
 		LOGGER.debug("");
 		LOGGER.debug("=================================================");
 		LOGGER.debug("Logger had been started");
@@ -37,8 +35,8 @@ public class Runner {
 		LOGGER.info("Creating new text parsers.");
 		Parser textParser = new TextParser();
 		Parser paragraphParser = new ParagraphParser();
-		Parser sentenceParser = new LeafLookingParser();
-		Parser wordParser = new LeafLookingParser();
+		Parser sentenceParser = new SentenceParser();
+		Parser wordParser = new SentenceParser();
 		
 		LOGGER.info("Linking chain of responsibility.");
 		textParser.setNextParser(paragraphParser);
@@ -46,17 +44,19 @@ public class Runner {
 		sentenceParser.setNextParser(wordParser);
 	
 		LOGGER.info("Creating new text Composition.");
-		mainComponent.addAll(textParser.parse(TextInputOutput.readFromFile(), TextType.TEXT));
+		mainComponent.addAll(textParser.parse(TextInputOutput.readFromFile()));
 		
 		LOGGER.info("Decomposing objects to file.");
 		TextInputOutput.writeToFileText(mainComponent);
+
 		LOGGER.info("Searching for the unique words from the fitst sentence.");
-		TaskExecutor.uniqueWordSearch(mainComponent);
+		TaskExecutor.uniqueWordFromFirstSentence(mainComponent);
+		
 		try {
 			LOGGER.info("Sorting sentences by the amount of words.");
-			TaskExecutor.componentSort(TaskExecutor.getTextTypeComponents(mainComponent, TextType.SENTENCE));
-		} catch (ComponentsSearchException e) {
-			LOGGER.error(e);
+			TaskExecutor.componentSort(TaskExecutor.getComponentsFromLevel(mainComponent, 1));
+		} catch (ComponentMismatchException e) {
+			LOGGER.error("Exception in searching components to be found " + e);
 		}
 		LOGGER.info("Everything is done. Goodbye.");
 	}	

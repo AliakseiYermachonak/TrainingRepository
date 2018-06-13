@@ -1,17 +1,17 @@
 package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
+
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.LeafComponent;
-import com.epam.task.two.text.entity.TextType;
+import com.epam.task.two.text.executor.RegexSupplier;
 
 /**
  * Parser class for the following and final links of the
@@ -20,14 +20,12 @@ import com.epam.task.two.text.entity.TextType;
  * @version 1.0
  */
 
-public class LeafLookingParser implements Parser{
+public class SentenceParser implements Parser{
 	
 	private Parser nextParser;
-	private static final Logger LOGGER = Logger.getLogger(LeafLookingParser.class);
-	ResourceBundle bundle = ResourceBundle.getBundle("com.epam.task.two.text.property.parser", Locale.getDefault());
+	private static final Logger LOGGER = Logger.getLogger(SentenceParser.class);
 	
-	public LeafLookingParser() {
-		PropertyConfigurator.configure("resource/log4j.properties");
+	public SentenceParser() {
 	}
 
 	/**
@@ -48,20 +46,19 @@ public class LeafLookingParser implements Parser{
 	 * @see Component
 	 */
 	@Override
-	public ArrayList<Component> parse(String text, TextType textType) {
+	public ArrayList<Component> parse(String text) {
 		ArrayList<Component> list = new ArrayList<>();
 
-		Pattern pattern = Pattern.compile(bundle.getString(textType.name()));
+		Pattern pattern = Pattern.compile(RegexSupplier.getRegex("SENTENCE"));
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
 			
 			String temp = matcher.group().trim();
-			LOGGER.debug("Trying to add " + TextType.values()[textType.getNext()] + " || " + temp);
-			LOGGER.debug("To " + textType);
+			LOGGER.debug("Trying to add WORD || " + temp);
+			LOGGER.debug("To SENTENCE");
 			
-			list.add(new LeafComponent(temp, TextType.values()[textType.getNext()]));
-			LOGGER.debug("New leaf " + TextType.values()[textType.getNext()] + " \"" + temp + "\" addead to " + textType);
-			
+			list.add(new LeafComponent(temp));
+			LOGGER.debug("New leaf WORD \"" + temp + "\" addead to SENTENCE");
 		}
 		return list;
 	}

@@ -1,6 +1,6 @@
 package com.epam.task.two.text.exception;
 
-public class ComponentsSearchException extends Exception{
+public class ComponentMismatchException extends Exception{
 
 	/**
 	 * Exception is thrown when a component of
@@ -11,24 +11,24 @@ public class ComponentsSearchException extends Exception{
 	
 	private static final long serialVersionUID = 1L;
 
-	public ComponentsSearchException() {
+	public ComponentMismatchException() {
 		super();
 	}
 
-	public ComponentsSearchException(String message, Throwable cause, boolean enableSuppression,
+	public ComponentMismatchException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	public ComponentsSearchException(String message, Throwable cause) {
+	public ComponentMismatchException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public ComponentsSearchException(String message) {
+	public ComponentMismatchException(String message) {
 		super(message);
 	}
 
-	public ComponentsSearchException(Throwable cause) {
+	public ComponentMismatchException(Throwable cause) {
 		super(cause);
 	}
 	

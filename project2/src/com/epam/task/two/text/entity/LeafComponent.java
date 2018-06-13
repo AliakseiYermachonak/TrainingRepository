@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
+import com.epam.task.two.text.exception.ComponentMismatchException;
+
 public class LeafComponent implements Component{
 	
 	private static final Logger LOGGER = Logger.getLogger(LeafComponent.class);
 	
 	private ArrayList<Component> list;
 	private String data;
-	private TextType textType;
 
-	public LeafComponent(String text, TextType textType) {
+	public LeafComponent(String text) {
 		LOGGER.debug("creating new leaf component");
 		list = new ArrayList<Component>();
 		data = text;
-		this.textType = textType;
 	}
 
 	@Override
@@ -31,11 +31,23 @@ public class LeafComponent implements Component{
 
 	@Override
 	public void add(Component component) {
+		try {
+			throw new ComponentMismatchException();
+		} catch (ComponentMismatchException e) {
+			LOGGER.error("Cannot add Component into the leaf");
+			e.printStackTrace();
+		}
 		LOGGER.debug("cannot add Component into the leaf");
 	}
 
 	@Override
 	public void addAll(ArrayList<Component> components) {
+		try {
+			throw new ComponentMismatchException();
+		} catch (ComponentMismatchException e) {
+			LOGGER.error("Cannot add Components into the leaf");
+			e.printStackTrace();
+		}
 		LOGGER.debug("cannot add Components into the leaf");
 	}
 
@@ -52,11 +64,6 @@ public class LeafComponent implements Component{
 	@Override
 	public int getLength() {
 		return list.size();
-	}
-
-	@Override
-	public TextType getTextType() {
-		return this.textType;
 	}
 
 }

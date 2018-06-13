@@ -1,18 +1,16 @@
 package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.LeafComponent;
 import com.epam.task.two.text.entity.TextComponent;
-import com.epam.task.two.text.entity.TextType;
+import com.epam.task.two.text.executor.RegexSupplier;
 
 /**
  * Parser class for the following links of the
@@ -25,10 +23,9 @@ public class ParagraphParser implements Parser {
 
 	private Parser nextParser;
 	private static final Logger LOGGER = Logger.getLogger(ParagraphParser.class);
-	ResourceBundle bundle = ResourceBundle.getBundle("com.epam.task.two.text.property.parser", Locale.getDefault());
 	
 	public ParagraphParser() {
-		PropertyConfigurator.configure("resource/log4j.properties");
+
 	}
 
 	/**
@@ -49,25 +46,22 @@ public class ParagraphParser implements Parser {
 	 * @see Component
 	 */
 	@Override
-	public ArrayList<Component> parse(String text, TextType textType) {
+	public ArrayList<Component> parse(String text) {
 		ArrayList<Component> list = new ArrayList<>();
 
-		Pattern pattern = Pattern.compile(bundle.getString(textType.name()));
+		Pattern pattern = Pattern.compile(RegexSupplier.getRegex("PARAGRAPH"));
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
 			String temp = matcher.group().trim();
-			LOGGER.debug("Trying to add " + TextType.values()[textType.getNext()] + " || " + temp);
-			LOGGER.debug("To " + textType);
-			if (temp.matches(bundle.getString("DigitWithDot"))) {
-				list.add(new LeafComponent(temp, TextType.values()[textType.getNext()]));
+			LOGGER.debug("Trying to add SENTENCE || " + temp);
+			LOGGER.debug("To PARAGRAPH");
+			if (temp.matches(RegexSupplier.getRegex("DigitWithDot"))) {
+				list.add(new LeafComponent(temp));
 			} else {
-				list.add(new TextComponent(nextParser.parse(temp, TextType.values()[textType.getNext()]), 
-						TextType.values()[textType.getNext()]));
-				LOGGER.debug("New component " + TextType.values()[textType.getNext()] + " \"" + temp
-						+ "\" addead to " + textType);
+				list.add(new TextComponent(nextParser.parse(temp)));
+				LOGGER.debug("New component SENTENCE  \"" + temp + "\" addead to PARAGRAPH");
 			}
 		}
 		return list;
 	}
-
 }

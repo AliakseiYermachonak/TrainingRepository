@@ -8,87 +8,82 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.epam.task.two.text.entity.Component;
-import com.epam.task.two.text.entity.TextType;
-import com.epam.task.two.text.exception.ComponentsSearchException;
+import com.epam.task.two.text.exception.ComponentMismatchException;
 
 /**
- * Class container of the static methods
- * for solving the tasks
+ * Class container of the static methods for solving the tasks
+ * 
  * @author Alexey Yermachyonok
  * @version 1.0
  */
 
 public class TaskExecutor {
-	
+
 	private static final Logger LOGGER = Logger.getLogger(TaskExecutor.class);
-	/*static {
-		PropertyConfigurator.configure("resources/log4j.properties");
-	}
-	
+
 	/**
-	 * Creating a list of the components with given text type
-	 * from the source text
-	 * @param Component to get the list of the components
-	 * @param TextType of the components to find
-	 * @return The ArrayList of the components from the given Component list
-	 * @see Component
-	 */
-	public static ArrayList<Component> getTextTypeComponents(Component component, TextType textType)
-			throws ComponentsSearchException {
-		ArrayList<Component> list = new ArrayList<>();
-		if (component.getTextType().compareTo(textType) > 0) {
-			throw new ComponentsSearchException();
-		} else if (component.getTextType() == textType) {
-			list.add(component);
-		} else if (component.getList() != null) {
-			for(Component c: component.getList()) {
-				list.addAll(getTextTypeComponents(c, textType));
-			}
-		}
-		return list;
-	}
-	
-	/**
-	 * Sorts the list of components by their components capacity
-	 * end writes it to the file.
+	 * Sorts the list of components by their components capacity end writes it to
+	 * the file.
+	 * 
 	 * @param Array list of the components to sort,
 	 * @see Component
 	 */
 	public static void componentSort(ArrayList<Component> list) {
-			Collections.sort(list);
-			for(Component c: list) {
-				TextInputOutput.writeToFileTask(c);
-			}
+		Collections.sort(list);
+		for (Component c : list) {
+			TextInputOutput.writeToFileTask(c);
+		}
 	}
-	
+
 	/**
-	 * Searches for the unique word from the first sentence
-	 * end writes it to the file.
+	 * Searches for the unique word from the first sentence end writes it to the
+	 * file.
 	 * @param Array list of the components to sort,
 	 */
-	public static void uniqueWordSearch(Component component) {
+	public static void uniqueWordFromFirstSentence(Component component) {
+
 		try {
-			ArrayList<Component> list = getTextTypeComponents(component, TextType.SENTENCE);
-			Component firstSentence = list.get(0);
-			ArrayList<Component> listOfWords = getTextTypeComponents(component, TextType.WORD);
+			Component firstSentence = getComponentsFromLevel(component, 1).get(0);
+			ArrayList<Component> listOfLeafs = getComponentsFromLevel(component, 2);
 			Map<String, Integer> map = new HashMap<>();
-			for (Component c: listOfWords) {
-				if(map.containsKey(c.getData())){
-					map.put(c.getData(), map.get(c.getData())+1);
+			for (Component c : listOfLeafs) {
+				if (map.containsKey(c.getData())) {
+					map.put(c.getData(), map.get(c.getData()) + 1);
 				} else {
 					map.put(c.getData(), 1);
 				}
 			}
-			ArrayList<Component> listFromFirst = getTextTypeComponents(firstSentence, TextType.WORD);
-			for (Component c: listFromFirst) {
-				if(map.containsKey(c.getData())&&(map.get(c.getData()) == 1)){
+			ArrayList<Component> leafsFromFirst = firstSentence.getList();
+			for (Component c : leafsFromFirst) {
+				if (map.containsKey(c.getData()) && (map.get(c.getData()) == 1)) {
 					TextInputOutput.writeToFileTask(c);
 				}
 			}
-		} catch (ComponentsSearchException e) {
-			LOGGER.error(e);
-		} catch (Exception e) {
-			LOGGER.error(e);
+		} catch (ComponentMismatchException e) {
+			LOGGER.error("Cannot go in such search component direction " + e);
 		}
+	}
+	
+	/**
+	 * Helps to get the components from the exact level of the composed data.
+	 * @param Component to get the parts from, and the level of the tree for search
+	 * @param int level of the tree
+	 * @return The ArrayList of the components from the given Component list
+	 * @throws ComponentMismatchException 
+	 * @see Component
+	 */
+	public static ArrayList<Component> getComponentsFromLevel(Component component, int level)
+			throws ComponentMismatchException {
+		ArrayList<Component> listOfComponents = new ArrayList<>();
+		int depth = 0;
+		if (level < 0) throw new ComponentMismatchException();
+		if (depth == level) {
+			listOfComponents.addAll(component.getList());
+		} else {
+			for(Component c: component.getList()) {
+				listOfComponents.addAll(getComponentsFromLevel(c, level-1));
+			}
+		}
+		return listOfComponents;
 	}
 }

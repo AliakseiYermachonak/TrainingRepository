@@ -1,6 +1,7 @@
 package com.epam.task.two.text.executor;
 
 import java.io.FileReader;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -8,7 +9,6 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.epam.task.two.text.entity.Component;
-import com.epam.task.two.text.entity.TextType;
 
 /**
  * Class container of the static methods
@@ -28,13 +28,13 @@ public class TextInputOutput {
 	public static String readFromFile(){
 		StringBuilder stringBuilder = new StringBuilder();
 		LOGGER.debug("start reading file");
-		try(Scanner scanner = new Scanner(new FileReader("./resource/Text2Read2.txt"))){
+		try(Scanner scanner = new Scanner(new FileReader("./resource/Text2Read.txt"))){
 			while(scanner.hasNext()) {
 				stringBuilder.append(scanner.nextLine());
 				stringBuilder.append("\n");
 			}
 		} catch (IOException e) {
-			LOGGER.error(e);
+			LOGGER.error("Something went wrong when we were reading the file " + e);
 		}
 		LOGGER.debug("file successfully read");
 		return stringBuilder.toString();
@@ -52,18 +52,18 @@ public class TextInputOutput {
             fileWriter.flush();
         }
         catch(IOException e){
-            LOGGER.error(e);
+            LOGGER.error("Something went wrong when we were writing the file " + e);
         } 
 	}
 	
 	/**
-	 * Writes text of the tasks into the predefined files.
+	 * Writes text of the tasks into the predefined file.
 	 * @param Component to get the text from.
 	 * @see Component
 	 */
 	public static void writeToFileTask(Component component){
 		String fileName;
-		if (component.getTextType() == TextType.SENTENCE) {
+		if (component.getData().matches(RegexSupplier.getRegex("WORD"))) {
 			fileName = "./resource/File4Task1.txt";
 		} else {
 			fileName = "./resource/File4Task2.txt";
@@ -74,7 +74,8 @@ public class TextInputOutput {
             fileWriter.flush();
         }
         catch(IOException e){
-            System.out.println(e.getMessage());
+        	LOGGER.error("Something went wrong when we were writing "
+        			+ "task results into the file " + e);
         } 
 	}
 }

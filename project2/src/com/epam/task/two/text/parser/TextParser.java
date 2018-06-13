@@ -1,16 +1,13 @@
 package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.epam.task.two.text.entity.Component;
 import com.epam.task.two.text.entity.LeafComponent;
 import com.epam.task.two.text.entity.TextComponent;
-import com.epam.task.two.text.entity.TextType;
+import com.epam.task.two.text.executor.RegexSupplier;
 
 /**
  * Parser class for the first link of the
@@ -23,10 +20,8 @@ public class TextParser implements Parser{
 
 	private Parser nextParser;
 	private static final Logger LOGGER = Logger.getLogger(TextParser.class);
-	ResourceBundle bundle = ResourceBundle.getBundle("com.epam.task.two.text.property.parser", Locale.getDefault());
-	public TextParser() {
-		PropertyConfigurator.configure("resource/log4j.properties");
-	}
+	
+	public TextParser() {}
 
 	/**
 	 * Use this to link the next chain unit.
@@ -46,9 +41,9 @@ public class TextParser implements Parser{
 	 * @see Component
 	 */
 	@Override
-	public ArrayList<Component> parse(String text, TextType textType) {
+	public ArrayList<Component> parse(String text) {
 		
-		String[] partsOfText = text.split(bundle.getString(textType.name()));
+		String[] partsOfText = text.split(RegexSupplier.getRegex("TEXT"));
 		ArrayList<Component> list = new ArrayList<>();
 				
 		StringBuilder listing = new StringBuilder();
@@ -59,8 +54,9 @@ public class TextParser implements Parser{
 				if (isStartOfListing(part)||listeningListing) {
 					if (isEndOfListing(part)) {
 						listing.append(part);
+						listing.append("\n");
 						LOGGER.debug("listing caught");
-						list.add(new LeafComponent(listing.toString(), TextType.values()[textType.getNext()]));
+						list.add(new LeafComponent(listing.toString()));
 						LOGGER.debug("listing added");
 						listing = new StringBuilder();
 						listeningListing = false;
@@ -70,10 +66,9 @@ public class TextParser implements Parser{
 						listeningListing = true;
 					}
 				} else {
-					list.add(new TextComponent(nextParser.parse(part, TextType.values()[textType.getNext()]),
-							TextType.values()[textType.getNext()]));
+					list.add(new TextComponent(nextParser.parse(part)));
+					list.add(new LeafComponent("\n"));
 				}
-			
 		}
 		return list;
 	}
@@ -84,7 +79,7 @@ public class TextParser implements Parser{
 	 * @return boolean
 	 */
 	private boolean isStartOfListing(String part) {
-		return part.matches(bundle.getString("StartOfListing"));
+		return part.matches(RegexSupplier.getRegex("StartOfListing"));
 	}
 	
 	/**
@@ -93,7 +88,7 @@ public class TextParser implements Parser{
 	 * @return boolean
 	 */
 	private boolean isEndOfListing(String part) {
-		return part.matches(bundle.getString("EndOfListing"));
+		return part.matches(RegexSupplier.getRegex("EndOfListing"));
 	}
 	
 }

@@ -15,19 +15,16 @@ public class TextComponent implements Component {
 	private static final Logger LOGGER = Logger.getLogger(TextComponent.class);
 	
 	private ArrayList<Component> list;
-	private TextType textType;
 	
 	public TextComponent() {
-		textType = TextType.TEXT;
 		LOGGER.debug("creating new text component");
 		list = new ArrayList<Component>();
 	}
 
-	public TextComponent(ArrayList<Component> list, TextType textType/*, boolean leaf*/) {
+	public TextComponent(ArrayList<Component> list) {
 		this.list = new ArrayList<Component>();
-		this.textType = textType;
 		this.list.addAll(list);
-		LOGGER.debug("creating new container with " + textType);
+		LOGGER.debug("creating new container ");
 	}
 	
 	/**
@@ -58,15 +55,6 @@ public class TextComponent implements Component {
 	}
 
 	/**
-	 * Shows the text type of a given components.
-	 * @return TextType
-	 */
-	@Override
-	public TextType getTextType() {
-		return textType;
-	}
-
-	/**
 	 * Gets the number of element in the list of components.
 	 * @return int length.
 	 */
@@ -83,33 +71,14 @@ public class TextComponent implements Component {
 	public String getData() {
 		StringBuilder stringBuilder = new StringBuilder();
 		for (Component component: list) {
-			switch (component.getTextType()) {
-				case TEXT : {
-					stringBuilder.append(component.getData());
-					break;
-				}
-				case PARAGRAPH : {
-					stringBuilder.append(component.getData());
-					stringBuilder.append("\n");	
-					break;
-				}
-				case SENTENCE : {
-					String sentence = component.getData();
-					stringBuilder.append(sentence);
-					if (!sentence.endsWith(" ")) {
-						stringBuilder.append(" ");
-					}
-					break;
-				}
-				case WORD : {
-					stringBuilder.append(component.getData());
+			if (component instanceof LeafComponent) {
+				stringBuilder.append(component.getData());
+				if (!component.getData().endsWith("\n")) {
 					stringBuilder.append(" ");
-					break;
 				}
-				default: {
-					stringBuilder.append(component.toString());
-					break;
-				}
+				continue;
+			} else {
+				stringBuilder.append(component.getData());
 			}
 		}
 		return stringBuilder.toString();
@@ -131,7 +100,7 @@ public class TextComponent implements Component {
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(textType);
+		stringBuilder.append(this.getClass().getSimpleName());
 		stringBuilder.append(" component contains ");
 		stringBuilder.append(list.size());
 		stringBuilder.append(" elements.");

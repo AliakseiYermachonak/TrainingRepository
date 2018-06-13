@@ -2,8 +2,6 @@ package com.epam.task.two.text.entity;
 
 import java.util.ArrayList;
 
-import com.epam.task.two.text.entity.TextType;
-
 /**
  * Basic component interface for realization
  * of Composition pattern.
@@ -29,12 +27,6 @@ public interface Component extends Comparable<Component>{
 	 * @param ArrayList of the Components
 	 */
 	void addAll(ArrayList<Component> components);
-	
-	/**
-	 * Shows the text type of a given components.
-	 * @return TextType
-	 */
-	TextType getTextType();
 	
 	/**
 	 * Gets the text of the list of the components.

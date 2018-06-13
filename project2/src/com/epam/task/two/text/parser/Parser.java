@@ -1,9 +1,7 @@
 package com.epam.task.two.text.parser;
 
 import java.util.ArrayList;
-
 import com.epam.task.two.text.entity.Component;
-import com.epam.task.two.text.entity.TextType;
 
 /**
  * Basic parser interface for realization
@@ -27,6 +25,6 @@ public interface Parser {
 	 * @return ArrayList of the components of the parsed text.
 	 * @see Component
 	 */
-	ArrayList<Component> parse(String text, TextType textType);
+	ArrayList<Component> parse(String text);
 	
 }
