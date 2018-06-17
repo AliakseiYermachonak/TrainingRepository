@@ -9,7 +9,6 @@ import org.apache.log4j.PropertyConfigurator;
  * @author Alexey Yermachyonok
  * @version 1.0
  */
-
 public class Passenger implements Runnable {
 
 	private final static Logger LOGGER = Logger.getLogger(Passenger.class);

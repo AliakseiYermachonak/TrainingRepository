@@ -9,8 +9,6 @@ import com.epam.task.three.threading.entity.Airport;
  * @author Alexey Yermachyonok
  * @version 1.0
  */
-
-
 public class Runner {
 
 	private final static Logger LOGGER = Logger.getLogger(Runner.class);
