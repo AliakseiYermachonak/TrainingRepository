@@ -47,14 +47,13 @@ public class CabListSAXParser extends DefaultHandler implements XMLParser {
 	}
 
 	public void startDocument() throws SAXException {
-		System.out.println("Parsing started.");
+		LOGGER.debug("Parsing started.");
 	}
 
 	public void endDocument() throws SAXException {
 
 		cabList.addAll(tempCabList);
-		System.out.println(cabList);
-		System.out.println("Parsing ended.");
+		LOGGER.debug("Parsing ended.");
 	}
 
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
