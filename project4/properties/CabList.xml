@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CabList>
+	<cab identifier="1">
+		<speed>110</speed>
+		<fuelConsumption>11</fuelConsumption>
+		<price>11000</price>
+	</cab>
+	<cab identifier="2">
+		<speed>120</speed>
+		<fuelConsumption>12</fuelConsumption>
+		<price>12000</price>
+	</cab>
+	<cab identifier="3">
+		<speed>130</speed>
+		<fuelConsumption>13</fuelConsumption>
+		<price>13000</price>
+	</cab>
+	<cab identifier="4">
+		<speed>140</speed>
+		<fuelConsumption>14</fuelConsumption>
+		<price>14000</price>
+	</cab>
+	<cab identifier="5">
+		<speed>150</speed>
+		<fuelConsumption>15</fuelConsumption>
+		<price>15000</price>
+	</cab>
+	<cab identifier="6">
+		<speed>180</speed>
+		<fuelConsumption>18</fuelConsumption>
+		<price>18000</price>
+	</cab>
+	<cab identifier="7">
+		<speed>170</speed>
+		<fuelConsumption>17</fuelConsumption>
+		<price>17000</price>
+	</cab>
+	<cab identifier="8">
+		<speed>160</speed>
+		<fuelConsumption>16</fuelConsumption>
+		<price>16000</price>
+	</cab>
+</CabList>
