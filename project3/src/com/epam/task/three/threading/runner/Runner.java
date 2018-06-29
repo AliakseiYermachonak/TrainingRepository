@@ -11,13 +11,13 @@ import com.epam.task.three.threading.entity.Airport;
  */
 public class Runner {
 
-	private final static Logger LOGGER = Logger.getLogger(Runner.class);
-	
-	public static void main(String[] args) {
-		try {
-			new Airport(16).work();
-		} catch (InterruptedException e) {
-			LOGGER.error("Whole airport is burnning! " + e);
-		}
-	}
+    private final static Logger LOGGER = Logger.getLogger(Runner.class);
+    
+    public static void main(String[] args) {
+        try {
+            Airport.getInstance(16).work();
+        } catch (InterruptedException e) {
+            LOGGER.error("Whole airport is burnning! " + e);
+        }
+    }
 }
