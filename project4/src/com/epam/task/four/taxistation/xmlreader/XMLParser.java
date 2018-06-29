@@ -5,7 +5,7 @@ import java.util.List;
 import com.epam.task.four.taxistation.model.Cab;
 
 public interface XMLParser {
-	
-	public List<Cab> getCabList();
-	
+    
+    public List<Cab> getCabList();
+    
 }

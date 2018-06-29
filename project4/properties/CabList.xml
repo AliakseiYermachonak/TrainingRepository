@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<CabList>
+<CabList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="list.xsd">
 	<cab identifier="1">
 		<speed>110</speed>
 		<fuelConsumption>11</fuelConsumption>

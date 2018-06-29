@@ -10,26 +10,28 @@ import com.epam.task.four.taxistation.exception.TaxiNotFoundException;
 import com.epam.task.four.taxistation.model.Cab;
 import com.epam.task.four.taxistation.model.TaxiStation;
 import com.epam.task.four.taxistation.xmlreader.Director;
+import com.epam.task.four.taxistation.xmlreader.XMLValidator;
+
 /**
- * Class is used for executing commands
- * according to the main menu
+ * Class is used for executing commands according to the main menu
+ * 
  * @author Alexey Yermachyonok
  * @version 1.0
  */
 public class TaxiService {
-    
+
     final static Logger LOGGER = Logger.getLogger(TaxiService.class);
-    
+
     /**
-     * Attribute is an entity object
-     * with our list of cabs to work with
+     * Attribute is an entity object with our list of cabs to work with
+     * 
      * @see TaxiStation
      */
     private TaxiStation taxiStation;
 
     /**
-     * Creates a new service class
-     * for each entity object 
+     * Creates a new service class for each entity object
+     * 
      * @param taxiStation
      * @see TaxiStation
      */
@@ -39,8 +41,8 @@ public class TaxiService {
     }
 
     /**
-     * Generates a list of random cabs
-     * with random parameters
+     * Generates a list of random cabs with random parameters
+     * 
      * @see Cab
      */
     public void generateCabList() {
@@ -48,19 +50,20 @@ public class TaxiService {
         if (!taxiStation.getCabList().isEmpty()) {
             taxiStation.getCabList().clear();
         }
-        int n = (int) (Math.random()*6 + 5);
+        int n = (int) (Math.random() * 6 + 5);
         for (int i = 0; i < n; i++) {
-            int price = ((int) (Math.random()*600 + 500)) * (i+1);
-            int speed = ((int) (Math.random()*16 + 15)) * (i+1);
-            int fuel = ((int) (Math.random()*16 + 5));
+            int price = ((int) (Math.random() * 600 + 500)) * (i + 1);
+            int speed = ((int) (Math.random() * 16 + 15)) * (i + 1);
+            int fuel = ((int) (Math.random() * 16 + 5));
             taxiStation.addCab(new Cab(speed, fuel, price));
         }
         LOGGER.debug("List of cabs has been generated.");
         showCabList();
     }
-    
+
     /**
      * Shows each cab from the list
+     * 
      * @see Cab
      */
     public void showCabList() {
@@ -68,16 +71,16 @@ public class TaxiService {
         if (taxiStation.getCabList().isEmpty()) {
             LOGGER.info("Note: your taxi station is empty");
         } else {
-            for (Cab cab: taxiStation.getCabList()) {
+            for (Cab cab : taxiStation.getCabList()) {
                 LOGGER.info(cab);
             }
         }
     }
-    
+
     /**
-    * Sorts cabs according to their fuel consumption
-    */
-    public void sortCabs(){
+     * Sorts cabs according to their fuel consumption
+     */
+    public void sortCabs() {
         LOGGER.debug("Sorting cabs.");
         if (taxiStation.getCabList().isEmpty()) {
             LOGGER.info("Note: your taxi station is empty");
@@ -86,9 +89,10 @@ public class TaxiService {
             showCabList();
         }
     }
-    
+
     /**
      * Shows the total taxi station price
+     * 
      * @return int price
      */
     public int showPrice() {
@@ -97,16 +101,17 @@ public class TaxiService {
             LOGGER.info("Note: your taxi station is empty");
         }
         int sum = 0;
-        for (Cab cab: taxiStation.getCabList()) {
+        for (Cab cab : taxiStation.getCabList()) {
             sum += cab.getPrice();
         }
         LOGGER.info("Total taxi station price: " + sum);
         return sum;
     }
-    
+
     /**
-     * Looks for a cab with speed parameter from the received delta.
-     * Asks to input delta from console
+     * Looks for a cab with speed parameter from the received delta. Asks to input
+     * delta from console
+     * 
      * @return The first cab, suitable for the input data.
      * @throws TaxiNotFoundException
      * @see Cab
@@ -118,18 +123,18 @@ public class TaxiService {
         }
 
         int a, b;
-        
+
         Scanner scanner = new Scanner(System.in);
         try {
             LOGGER.info("Bottom line of taxi speed is ");
             a = Integer.parseInt(scanner.next());
             LOGGER.info("Upper bound of taxi speed is ");
             b = Integer.parseInt(scanner.next());
-            
+
             LOGGER.debug("Looking for a cab from the range.");
-            
-            for (Cab cab: taxiStation.getCabList()) {
-                if (cab.getSpeed()>=a && cab.getSpeed()<=b) {
+
+            for (Cab cab : taxiStation.getCabList()) {
+                if (cab.getSpeed() >= a && cab.getSpeed() <= b) {
                     LOGGER.info("You are looking for a \n" + cab);
                     return cab;
                 }
@@ -138,36 +143,42 @@ public class TaxiService {
             LOGGER.info("Please, enter a number");
             LOGGER.error("Number input problem. \nStack:", e);
         }
-        throw new TaxiNotFoundException();    
+        throw new TaxiNotFoundException();
     }
-    
+
     /**
-     * Reads a list of cabs from XML
-     * with SAX
+     * Reads a list of cabs from XML with SAX
+     * 
      * @see Cab
      */
     public void readSAXCabList() {
-        taxiStation.setCabList(new Director().useSAX());
+        if (XMLValidator.validateList()) {
+            taxiStation.setCabList(new Director().useSAX());
+        }
         showCabList();
     }
-    
+
     /**
-     * Reads a list of cabs from XML
-     * with StAX
+     * Reads a list of cabs from XML with StAX
+     * 
      * @see Cab
      */
     public void readStAXCabList() {
-        taxiStation.setCabList(new Director().useStAX());
+        if (XMLValidator.validateList()) {
+            taxiStation.setCabList(new Director().useStAX());
+        }
         showCabList();
     }
-    
+
     /**
-     * Reads a list of cabs from XML
-     * with DOM
+     * Reads a list of cabs from XML with DOM
+     * 
      * @see Cab
      */
     public void readDOMCabList() {
-        taxiStation.setCabList(new Director().useDOM());
+        if (XMLValidator.validateList()) {
+            taxiStation.setCabList(new Director().useDOM());
+        }
         showCabList();
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CabList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="cab" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:integer" name="speed" minOccurs="1" maxOccurs="300"/>
+              <xs:element type="xs:integer" name="fuelConsumption" minOccurs="1" maxOccurs="30"/>
+              <xs:element type="xs:integer" name="price"/>
+            </xs:sequence>
+            <xs:attribute type="xs:byte" name="identifier" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ </xs:schema>
