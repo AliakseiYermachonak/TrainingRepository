@@ -37,14 +37,14 @@ public class Airport {
     }
     
     public static Airport getInstance(int i) {
-    	if (instance == null) {
-    		synchronized(Airport.class) {
-    			if (instance == null) {
-    				instance = new Airport(i);
-    			}
-    		}
-    	}
-    	return instance;
+        if (instance == null) {
+            synchronized(Airport.class) {
+                if (instance == null) {
+                    instance = new Airport(i);
+                }
+            }
+        }
+        return instance;
     }
     
     /**
@@ -80,48 +80,48 @@ public class Airport {
 
     
     public void tryExchangeRoom(Passenger passenger) {
-    	try {
-	    	LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " wants to change the ticket "
-	    			+ passenger.getTicketToPlane());
-	        if (passenger.getTicketToPlane() > getPlanesLanded() - 2) {
-	            synchronized (exchangeRoom) {
-	                if (exchangeRoom.isEmpty()) {
-	                    exchangeRoom.setEmpty(false);
-	                    exchangeRoom.setPassenger(passenger);
-	                    LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " with ticket "
-	                    		+ passenger.getTicketToPlane() + " is waiting for exchange.");
-	                } else {
-	                    Thread.sleep(100);
-	                    if (exchangeRoom.getPassenger().getTicketToPlane() > getPlanesLanded() - 2) {
-	                        passenger.setTicketToPlane(EXCHANGER.exchange(passenger.getTicketToPlane()));
-	                        passenger.setWantToChange(false);
-	                        LOGGER.debug("Passenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() 
-	                        	+ " took another part of exchanger.");
-	                        exchangeRoom.setEmpty(true);
-	                        LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() + " is satisfied.");
-	                        LOGGER.info("\t\t\t\t\tPassenger " + exchangeRoom.getPassenger().getId() + " with ticket "
-	                                    + exchangeRoom.getPassenger().getTicketToPlane() + " is satisfied.");
-	                    } else {
-	                        LOGGER.info("\t\t\t\t\tPassenger " + exchangeRoom.getPassenger().getId() 
-	                                + " has lost the ticket " + exchangeRoom.getPassenger().getTicketToPlane() + " valid time.");
-	                        exchangeRoom.getPassenger().isWantToLeave();
-	                        int a = Airport.EXCHANGER.exchange(new Integer(0));
-	                        exchangeRoom.setPassenger(passenger);
-	                    }
-	                }
-	            }
-	            if (passenger.isWantToChange()) {
-	                LOGGER.debug("Passenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() + " took a first Exchanger part.");
-	                passenger.setTicketToPlane(EXCHANGER.exchange(passenger.getTicketToPlane()));
-	                passenger.setWantToChange(false);
-	            }
-	        } else {
-	            LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " has lost the ticket valid time.");
-	            passenger.setWantToChange(false);
-	        }
-    	} catch (InterruptedException e) {
-    		LOGGER.error("We have a problem in ticket exchang " + e);
-    	}
+        try {
+            LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " wants to change the ticket "
+                    + passenger.getTicketToPlane());
+            if (passenger.getTicketToPlane() > getPlanesLanded() - 2) {
+                synchronized (exchangeRoom) {
+                    if (exchangeRoom.isEmpty()) {
+                        exchangeRoom.setEmpty(false);
+                        exchangeRoom.setPassenger(passenger);
+                        LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " with ticket "
+                                + passenger.getTicketToPlane() + " is waiting for exchange.");
+                    } else {
+                        Thread.sleep(100);
+                        if (exchangeRoom.getPassenger().getTicketToPlane() > getPlanesLanded() - 2) {
+                            passenger.setTicketToPlane(EXCHANGER.exchange(passenger.getTicketToPlane()));
+                            passenger.setWantToChange(false);
+                            LOGGER.debug("Passenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() 
+                                + " took another part of exchanger.");
+                            exchangeRoom.setEmpty(true);
+                            LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() + " is satisfied.");
+                            LOGGER.info("\t\t\t\t\tPassenger " + exchangeRoom.getPassenger().getId() + " with ticket "
+                                        + exchangeRoom.getPassenger().getTicketToPlane() + " is satisfied.");
+                        } else {
+                            LOGGER.info("\t\t\t\t\tPassenger " + exchangeRoom.getPassenger().getId() 
+                                    + " has lost the ticket " + exchangeRoom.getPassenger().getTicketToPlane() + " valid time.");
+                            exchangeRoom.getPassenger().isWantToLeave();
+                            int a = Airport.EXCHANGER.exchange(new Integer(0));
+                            exchangeRoom.setPassenger(passenger);
+                        }
+                    }
+                }
+                if (passenger.isWantToChange()) {
+                    LOGGER.debug("Passenger " + passenger.getId() + " with ticket " + passenger.getTicketToPlane() + " took a first Exchanger part.");
+                    passenger.setTicketToPlane(EXCHANGER.exchange(passenger.getTicketToPlane()));
+                    passenger.setWantToChange(false);
+                }    
+            } else {
+                LOGGER.info("\t\t\t\t\tPassenger " + passenger.getId() + " has lost the ticket valid time.");
+                passenger.setWantToChange(false);
+            }
+        } catch (InterruptedException e) {
+            LOGGER.error("We have a problem in ticket exchang " + e);
+        }
     }
     
     /**
